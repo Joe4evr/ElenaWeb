@@ -1,0 +1,24 @@
+﻿@model DetailViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = $"Detail - {Model.Name}";
+
+    string img = (Model.Type == Elena.Models.ProductType.Painting)
+        ? "~/img/paintings/" + Model.Image
+        : "~/img/cakes/" + Model.Image;
+}
+
+<div>
+    <h3>@Model.Name</h3>
+    <p>
+        <img src="@img" />
+    </p>
+    <p>
+        @Model.Description
+    </p>
+    <p>
+        &euro; @Model.Price
+    </p>
+</div>

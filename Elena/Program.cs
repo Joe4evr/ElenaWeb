@@ -1,0 +1,37 @@
+﻿using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+
+namespace Elena
+{
+    public sealed class Program
+    {
+        private const string HostingJsonFileName = "hosting.json";
+
+        public static void Main(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile(HostingJsonFileName, optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .AddCommandLine(args)
+                .Build();
+
+            var host = new WebHostBuilder()
+                .UseConfiguration(configuration)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseKestrel(
+                    options =>
+                    {
+                        // Do not add the Server HTTP header when using the Kestrel Web Server.
+                        options.AddServerHeader = false;
+                    })
+                // $Start-WebServer-IIS$
+                .UseIISIntegration()
+                // $End-WebServer-IIS$
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
+    }
+}
