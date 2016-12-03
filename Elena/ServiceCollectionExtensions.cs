@@ -1,13 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Elena.Models;
 using Elena.Services;
 using Elena.Settings;
-using Microsoft.EntityFrameworkCore;
 
 namespace Elena
 {
-    public static partial class ServiceCollectionExtensions
+    internal static partial class ServiceCollectionExtensions
     {
         /// <summary>
         /// Configures the anti-forgery tokens for better security. See:
@@ -91,7 +91,7 @@ namespace Elena
         /// Configures custom services to add to the ASP.NET MVC 6 Injection of Control (IoC) container.
         /// </summary>
         /// <param name="services">The services collection or IoC container.</param>
-        public static IServiceCollection AddCustomServices(this IServiceCollection services)
+        public static IServiceCollection AddCustomServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IBrowserConfigService, BrowserConfigService>();
 #if NET461
@@ -114,9 +114,12 @@ namespace Elena
             // Transient - A new instance is created and returned each time.
             // services.AddTransient<IExampleService, ExampleService>();
 
-            //services.AddEntityFrameworkSqlServer();
-            //services.AddEntityFrameworkInMemoryDatabase();
-            services.AddDbContext<ElenaDbContext>(options => options.UseSqlite("Filename=./test.sqlite"));
+            services.AddDbContext<ElenaDbContext>(options => options
+#if DEBUG
+                .UseSqlite("Filename=./test.sqlite"));
+#else
+                .UseSqlServer(config[""]));
+#endif
 
             return services;
         }

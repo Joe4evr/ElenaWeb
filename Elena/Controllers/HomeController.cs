@@ -18,45 +18,47 @@ namespace Elena.Controllers
     {
         #region Fields
         private readonly ElenaDbContext _db;
-        private readonly IOptions<AppSettings> _appSettings;
-        private readonly IBrowserConfigService _browserConfigService;
-#if NET461
-        // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
-        // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
-        private readonly IFeedService _feedService;
-#endif
-        private readonly IManifestService _manifestService;
-        private readonly IOpenSearchService _openSearchService;
-        private readonly IRobotsService _robotsService;
+//        private readonly IOptions<AppSettings> _appSettings;
+//        private readonly IBrowserConfigService _browserConfigService;
+//#if NET461
+//        // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
+//        // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
+//        private readonly IFeedService _feedService;
+//#endif
+//        private readonly IManifestService _manifestService;
+//        private readonly IOpenSearchService _openSearchService;
+//        private readonly IRobotsService _robotsService;
+
+        private static readonly int _itemsPerPage = 20;
 
         #endregion
 
         #region Constructors
 
         public HomeController(
-            ElenaDbContext db,
-            IBrowserConfigService browserConfigService,
-#if NET461
-            // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
-            // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
-            IFeedService feedService,
-#endif
-            IManifestService manifestService,
-            IOpenSearchService openSearchService,
-            IRobotsService robotsService,
-            IOptions<AppSettings> appSettings)
+//            IBrowserConfigService browserConfigService,
+//#if NET461
+//            // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
+//            // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
+//            IFeedService feedService,
+//#endif
+//            IManifestService manifestService,
+//            IOpenSearchService openSearchService,
+//            IRobotsService robotsService,
+//            IOptions<AppSettings> appSettings,
+            ElenaDbContext db)
         {
             _db = db;
-            _appSettings = appSettings;
-            _browserConfigService = browserConfigService;
-#if NET461
-            // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
-            // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
-            _feedService = feedService;
-#endif
-            _manifestService = manifestService;
-            _openSearchService = openSearchService;
-            _robotsService = robotsService;
+//            _appSettings = appSettings;
+//            _browserConfigService = browserConfigService;
+//#if NET461
+//            // The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed
+//            // type does not yet exist. See https://github.com/dotnet/wcf/issues/76.
+//            _feedService = feedService;
+//#endif
+//            _manifestService = manifestService;
+//            _openSearchService = openSearchService;
+//            _robotsService = robotsService;
         }
 
         #endregion
@@ -74,7 +76,7 @@ namespace Elena.Controllers
             var products = _db.Products.Where(p => p.Type == ProductType.Painting).ToList();
             ViewBag.Title = "Gallery";
             return base.View(viewName: HomeControllerAction.Products,
-                model: new ProductsViewModel(products.Skip(20 * page).Take(20), products.Count));
+                model: new ProductsViewModel(products.Skip(_itemsPerPage * page).Take(_itemsPerPage), products.Count));
         }
 
         //[NoTrailingSlash]
@@ -84,7 +86,7 @@ namespace Elena.Controllers
             var products = _db.Products.Where(p => p.Type == ProductType.Cake).ToList();
             ViewBag.Title = "Cakes";
             return base.View(viewName: HomeControllerAction.Products,
-                model: new ProductsViewModel(products.Skip(20 * page).Take(20), products.Count));
+                model: new ProductsViewModel(products.Skip(_itemsPerPage * page).Take(_itemsPerPage), products.Count));
         }
 
         //[NoTrailingSlash]
@@ -106,17 +108,17 @@ namespace Elena.Controllers
         /// <returns>The Atom 1.0 feed for the current site.</returns>
         [ResponseCache(CacheProfileName = CacheProfileName.Feed)]
         [Route("feed", Name = HomeControllerRoute.GetFeed)]
-#if NET461
-        public async Task<IActionResult> Feed(CancellationToken cancellationToken)
-        {
-            return new AtomActionResult(await _feedService.GetFeed(cancellationToken));
-        }
-#else
-        public IActionResult Feed(CancellationToken cancellationToken)
-        {
-            return Ok("The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed type does not yet exist. See https://github.com/dotnet/wcf/issues/76.");
-        }
-#endif
+//#if NET461
+//        public async Task<IActionResult> Feed(CancellationToken cancellationToken)
+//        {
+//            return new AtomActionResult(await _feedService.GetFeed(cancellationToken));
+//        }
+//#else
+//        public IActionResult Feed(CancellationToken cancellationToken)
+//        {
+//            return Ok("The FeedService is not available for .NET Core because the System.ServiceModel.Syndication.SyndicationFeed type does not yet exist. See https://github.com/dotnet/wcf/issues/76.");
+//        }
+//#endif
 
         [Route("search", Name = HomeControllerRoute.GetSearch)]
         public IActionResult Search(string query)
@@ -140,14 +142,14 @@ namespace Elena.Controllers
         /// https://msdn.microsoft.com/en-us/library/dn320426%28v=vs.85%29.aspx
         /// </summary>
         /// <returns>The browserconfig XML for the current site.</returns>
-        [NoTrailingSlash]
-        [ResponseCache(CacheProfileName = CacheProfileName.BrowserConfigXml)]
-        [Route("browserconfig.xml", Name = HomeControllerRoute.GetBrowserConfigXml)]
-        public ContentResult BrowserConfigXml()
-        {
-            string content = _browserConfigService.GetBrowserConfigXml();
-            return Content(content, ContentType.Xml, Encoding.UTF8);
-        }
+        //[NoTrailingSlash]
+        //[ResponseCache(CacheProfileName = CacheProfileName.BrowserConfigXml)]
+        //[Route("browserconfig.xml", Name = HomeControllerRoute.GetBrowserConfigXml)]
+        //public ContentResult BrowserConfigXml()
+        //{
+        //    string content = _browserConfigService.GetBrowserConfigXml();
+        //    return Content(content, ContentType.Xml, Encoding.UTF8);
+        //}
 
         /// <summary>
         /// Gets the manifest JSON for the current site. This allows you to customize the icon and other browser
@@ -157,14 +159,14 @@ namespace Elena.Controllers
         /// implementation.
         /// </summary>
         /// <returns>The manifest JSON for the current site.</returns>
-        [NoTrailingSlash]
-        [ResponseCache(CacheProfileName = CacheProfileName.ManifestJson)]
-        [Route("manifest.json", Name = HomeControllerRoute.GetManifestJson)]
-        public ContentResult ManifestJson()
-        {
-            string content = _manifestService.GetManifestJson();
-            return Content(content, ContentType.Json, Encoding.UTF8);
-        }
+        //[NoTrailingSlash]
+        //[ResponseCache(CacheProfileName = CacheProfileName.ManifestJson)]
+        //[Route("manifest.json", Name = HomeControllerRoute.GetManifestJson)]
+        //public ContentResult ManifestJson()
+        //{
+        //    string content = _manifestService.GetManifestJson();
+        //    return Content(content, ContentType.Json, Encoding.UTF8);
+        //}
 
         /// <summary>
         /// Gets the Open Search XML for the current site. You can customize the contents of this XML here. The open
@@ -173,14 +175,14 @@ namespace Elena.Controllers
         /// http://www.opensearch.org
         /// </summary>
         /// <returns>The Open Search XML for the current site.</returns>
-        [NoTrailingSlash]
-        [ResponseCache(CacheProfileName = CacheProfileName.OpenSearchXml)]
-        [Route("opensearch.xml", Name = HomeControllerRoute.GetOpenSearchXml)]
-        public IActionResult OpenSearchXml()
-        {
-            string content = _openSearchService.GetOpenSearchXml();
-            return Content(content, ContentType.Xml, Encoding.UTF8);
-        }
+        //[NoTrailingSlash]
+        //[ResponseCache(CacheProfileName = CacheProfileName.OpenSearchXml)]
+        //[Route("opensearch.xml", Name = HomeControllerRoute.GetOpenSearchXml)]
+        //public IActionResult OpenSearchXml()
+        //{
+        //    string content = _openSearchService.GetOpenSearchXml();
+        //    return Content(content, ContentType.Xml, Encoding.UTF8);
+        //}
 
         /// <summary>
         /// Tells search engines (or robots) how to index your site.
@@ -190,13 +192,13 @@ namespace Elena.Controllers
         /// http://rehansaeed.com/dynamically-generating-robots-txt-using-asp-net-mvc/
         /// </summary>
         /// <returns>The robots text for the current site.</returns>
-        [NoTrailingSlash]
-        [ResponseCache(CacheProfileName = CacheProfileName.RobotsText)]
-        [Route("robots.txt", Name = HomeControllerRoute.GetRobotsText)]
-        public IActionResult RobotsText()
-        {
-            string content = _robotsService.GetRobotsText();
-            return Content(content, ContentType.Text, Encoding.UTF8);
-        }
+        //[NoTrailingSlash]
+        //[ResponseCache(CacheProfileName = CacheProfileName.RobotsText)]
+        //[Route("robots.txt", Name = HomeControllerRoute.GetRobotsText)]
+        //public IActionResult RobotsText()
+        //{
+        //    string content = _robotsService.GetRobotsText();
+        //    return Content(content, ContentType.Text, Encoding.UTF8);
+        //}
     }
 }

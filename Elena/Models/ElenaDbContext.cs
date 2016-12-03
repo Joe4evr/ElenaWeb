@@ -17,12 +17,12 @@ namespace Elena.Models
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Product>().ForSqlServerToTable("product");
-            modelBuilder.Entity<Customer>().ForSqlServerToTable("customer");
-            modelBuilder.Entity<Address>().ForSqlServerToTable("address");
-            modelBuilder.Entity<Order>().ForSqlServerToTable("order");
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Product>().ForSqlServerToTable("product");
+        //    modelBuilder.Entity<Customer>().ForSqlServerToTable("customer");
+        //    modelBuilder.Entity<Address>().ForSqlServerToTable("address");
+        //    modelBuilder.Entity<Order>().ForSqlServerToTable("order");
+        //}
     }
 }

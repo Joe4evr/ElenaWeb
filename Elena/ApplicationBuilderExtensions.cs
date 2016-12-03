@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Boilerplate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Elena.Constants;
 using NWebsec.AspNetCore.Middleware;
 
 namespace Elena
 {
-    public static partial class ApplicationBuilderExtensions
+    internal static partial class ApplicationBuilderExtensions
     {
         /// <summary>
         /// Configure tools used to help with debugging the application.
@@ -273,6 +275,21 @@ namespace Elena
                 //   Deny - Specifies that the X-Frame-Options header should be set in the HTTP response, instructing
                 //   the browser to not display the page when it is loaded in an iframe.
                 .UseXfo(options => options.Deny());
+        }
+
+        public static IApplicationBuilder UseLocalizationOptions(this IApplicationBuilder app)
+        {
+            var supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("nl-NL")
+            };
+
+            return app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("nl-NL"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
         }
     }
 }

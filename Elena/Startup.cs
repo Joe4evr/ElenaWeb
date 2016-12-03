@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Elena.Settings;
 using Newtonsoft.Json.Serialization;
+using Elena.Models;
+using Microsoft.AspNetCore.Localization;
 
 namespace Elena
 {
@@ -122,7 +124,7 @@ namespace Elena
                 // Add useful interface for accessing the HttpContext outside a controller.
                 .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
                 // Add useful interface for accessing the IUrlHelper outside a controller.
-                .AddScoped<IUrlHelper>(x => x.GetRequiredService<IUrlHelperFactory>()
+                .AddScoped(x => x.GetRequiredService<IUrlHelperFactory>()
                     .GetUrlHelper(x.GetRequiredService<IActionContextAccessor>().ActionContext))
                 // Adds a filter which help improve search engine optimization (SEO).
                 .AddSingleton<RedirectToCanonicalUrlAttribute>()
@@ -149,7 +151,7 @@ namespace Elena
                 // pascal case 'PropertyName' as this is the more common JavaScript/JSON style.
                 .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .Services
-                .AddCustomServices();
+                .AddCustomServices(configuration);
         }
 
         /// <summary>
@@ -180,8 +182,15 @@ namespace Elena
                 .UsePublicKeyPinsHttpHeader()
                 .UseContentSecurityPolicyHttpHeader(sslPort, hostingEnvironment)
                 .UseSecurityHttpHeaders()
+                .UseLocalizationOptions()
                 // Add MVC to the request pipeline.
                 .UseMvc();
+#if DEBUG
+            using (var ctx = (ElenaDbContext)application.ApplicationServices.GetService(typeof(ElenaDbContext)))
+            {
+                ctx.Database.EnsureCreated();
+            }
+#endif
         }
 
         #endregion
