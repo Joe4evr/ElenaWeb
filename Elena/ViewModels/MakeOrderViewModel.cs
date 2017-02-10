@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,31 +10,34 @@ namespace Elena.ViewModels
 {
     public class MakeOrderViewModel
     {
-        [Required]
+        public MakeOrderViewModel(IEnumerable<Product> products)
+        {
+            Products = products;
+        }
+
+        [Required, DisplayName("Voornaam")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required, DisplayName("Achternaam")]
         public string LastName { get; set; }
 
-        [Required, EmailAddress]
+        [Required, DisplayName("E-mail adres"), EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required, DisplayName("Straat")]
         public string Streetname { get; set; }
 
-        [Required]
+        [Required, DisplayName("Huisnummer")]
         public string Number { get; set; }
 
-        [Required]
-        public string City { get; set; }
-
-        [Required]
+        [Required, DisplayName("Postcode")]
         public string PostalCode { get; set; }
 
+        [Required, DisplayName("Woonplaats")]
+        public string City { get; set; }
 
-        public string Country { get; set; }
+        public string Country { get; set; } = "Nederland";
 
         public IEnumerable<Product> Products { get; set; }
-
     }
 }

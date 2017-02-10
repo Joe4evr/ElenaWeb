@@ -9,7 +9,7 @@
 <div class="body-content">
     <h4>Gallery:</h4>
     <div class="row">
-        @foreach (var product in Model.Products)
+        @foreach (var product in Model.Products.Where(p => p.IsAvailable))
         {
             <div class="well well-sm col-lg-3">
                 <a href="../detail/@product.Id">

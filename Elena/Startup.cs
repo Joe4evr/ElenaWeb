@@ -3,16 +3,16 @@ using Boilerplate.AspNetCore.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Elena.Settings;
 using Newtonsoft.Json.Serialization;
 using Elena.Models;
-using Microsoft.AspNetCore.Localization;
+using Elena.Settings;
 
 namespace Elena
 {

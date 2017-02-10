@@ -14,34 +14,19 @@ namespace Elena.Controllers
 {
     public class OrderController : Controller
     {
+        private const string SessionKey = "productids";
         private readonly ElenaDbContext _db;
-        //private readonly IOptions<AppSettings> _appSettings;
-        //private readonly IBrowserConfigService _browserConfigService;
-        //private readonly IManifestService _manifestService;
-        //private readonly IOpenSearchService _openSearchService;
-        //private readonly IRobotsService _robotsService;
 
-        public OrderController(
-            //IBrowserConfigService browserConfigService,
-            //IManifestService manifestService,
-            //IOpenSearchService openSearchService,
-            //IRobotsService robotsService,
-            //IOptions<AppSettings> appSettings,
-            ElenaDbContext db)
+        public OrderController(ElenaDbContext db)
         {
             _db = db;
-            //_appSettings = appSettings;
-            //_browserConfigService = browserConfigService;
-            //_manifestService = manifestService;
-            //_openSearchService = openSearchService;
-            //_robotsService = robotsService;
         }
 
-        //[HttpGet("", Name = OrderControllerRoute.GetIndex)]
+        [HttpGet("order", Name = OrderControllerRoute.GetIndex)]
         public IActionResult Index()
         {
             return View(OrderControllerAction.Index,
-                model: new MakeOrderViewModel());
+                model: new MakeOrderViewModel(GetProducts()));
         }
 
         [HttpPost("submit", Name = OrderControllerRoute.PostSubmit)]
@@ -49,7 +34,8 @@ namespace Elena.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //???
+                return View(OrderControllerAction.Index,
+                    model: new MakeOrderViewModel(GetProducts()));
             }
 
 
@@ -106,6 +92,41 @@ namespace Elena.Controllers
         public IActionResult OrderFailed()
         {
             return View();
+        }
+
+        private IEnumerable<Product> GetProducts()
+        {
+            byte[] productIds;
+            var products = new List<Product>();
+            if (HttpContext.Session.TryGetValue(SessionKey, out productIds))
+            {
+                for (int i = 0; i < productIds.Length; i += 4)
+                {
+                    int id = BitConverter.ToInt32(productIds, i);
+                    var a = _db.Products.SingleOrDefault(p => p.Id == id && p.IsAvailable);
+                    if (a != null)
+                    {
+                        products.Add(a);
+                    }
+                }
+            }
+
+            return products;
+        }
+
+        public int AddId(int id)
+        {
+            byte[] v;
+            if (!HttpContext.Session.TryGetValue(SessionKey, out v))
+            {
+                v = v.Concat(BitConverter.GetBytes(id)).ToArray();
+            }
+            else
+            {
+                v = BitConverter.GetBytes(id);
+            }
+            HttpContext.Session.Set(SessionKey, v);
+            return v.Length / 4;
         }
     }
 }

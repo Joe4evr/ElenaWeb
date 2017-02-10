@@ -5,9 +5,52 @@
 *@
 @{
 }
-<div>
 
-</div>
+@foreach (var product in Model.Products)
+{
+    <div class="well well-sm col-lg-3">
+        @product.Name<br />
+        @if (!String.IsNullOrEmpty(product.ImagePath))
+        {
+            <img src="~/img/paintings/@product.ImagePath" class="img-thumbnail" /><br />
+        }
+    </div>
+}
 <form asp-controller="Order" asp-action="Submit" method="post">
-    @this.
+    <div>
+        <label asp-for="@Model.FirstName"></label>
+        <input asp-for="@Model.FirstName" />
+        <span asp-validation-for="@Model.FirstName"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.LastName"></label>
+        <input asp-for="@Model.LastName" />
+        <span asp-validation-for="@Model.LastName"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Email"></label>
+        <input asp-for="@Model.Email" />
+        <span asp-validation-for="@Model.Email"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Streetname"></label>
+        <input asp-for="@Model.Streetname" />
+        <span asp-validation-for="@Model.Streetname"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Number"></label>
+        <input asp-for="@Model.Number" />
+        <span asp-validation-for="@Model.Number"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.PostalCode"></label>
+        <input asp-for="@Model.PostalCode" />
+        <span asp-validation-for="@Model.PostalCode"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.City"></label>
+        <input asp-for="@Model.City" />
+        <span asp-validation-for="@Model.City"></span>
+    </div>
+    <button type="submit">Bestel</button>
 </form>
