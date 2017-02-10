@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -185,12 +186,14 @@ namespace Elena
                 .UseLocalizationOptions()
                 // Add MVC to the request pipeline.
                 .UseMvc();
-#if DEBUG
             using (var ctx = (ElenaDbContext)application.ApplicationServices.GetService(typeof(ElenaDbContext)))
             {
+#if DEBUG
                 ctx.Database.EnsureCreated();
-            }
+#else
+                ctx.Database.Migrate();
 #endif
+            }
         }
 
         #endregion

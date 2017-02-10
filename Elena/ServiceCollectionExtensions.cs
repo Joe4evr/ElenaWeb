@@ -118,7 +118,7 @@ namespace Elena
 #if DEBUG
                 .UseSqlite("Filename=./test.sqlite"));
 #else
-                .UseSqlServer(config[""]));
+                .UseSqlServer(config["defaultConnection"]));
 #endif
 
             return services;
