@@ -37,7 +37,7 @@ namespace Elena.Controllers
             //_robotsService = robotsService;
         }
 
-        [HttpGet("", Name = OrderControllerRoute.GetIndex)]
+        //[HttpGet("", Name = OrderControllerRoute.GetIndex)]
         public IActionResult Index()
         {
             return View(OrderControllerAction.Index,

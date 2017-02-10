@@ -7,9 +7,9 @@ namespace Elena.Constants.OrderController
 {
     public class OrderControllerRoute
     {
-        public const string GetIndex = ControllerName.Order + "GetIndex";
-        public const string PostSubmit = ControllerName.Order + "PostSubmit";
-        public const string GetSuccess = ControllerName.Order + "GetIndex";
-        public const string GetFail = ControllerName.Order + "GetIndex";
+        public const string GetIndex = ControllerName.Order + "OrderIndex";
+        public const string PostSubmit = ControllerName.Order + "PostOrder";
+        public const string GetSuccess = ControllerName.Order + "OrderSuccess";
+        public const string GetFail = ControllerName.Order + "OrderFail";
     }
 }

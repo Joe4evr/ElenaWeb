@@ -7,6 +7,6 @@ namespace Elena.Constants.OrderController
 {
     public class OrderControllerAction
     {
-        public const string Index = "Index";
+        public const string Index = "OrderIndex";
     }
 }
