@@ -1,0 +1,65 @@
+[
+	{
+		"name": "Buigen voor het kruis",
+		"description": "olieverf op canvas; 80 x 60 cm",
+		"imagePath": "Buigen_voor_het_kruis.jpg",
+		"type": 1,
+		"price": 200.00
+	},
+	{
+		"name": "Me_and_my_house",
+		"description": "acryl op canvas; 40 x 60 cm",
+		"imagePath": "Me_and_my_house.jpg",
+		"type": 1,
+		"price": 100.00
+	},
+	{
+		"name": "Vuur",
+		"description": "acryl op canvas; 80 x 60 cm",
+		"imagePath": "Vuur.jpg",
+		"type": 1,
+		"price": 300.00
+	},
+	{
+		"name": "Harmonie",
+		"description": "acryl op canvas; 80 x 60 cm",
+		"imagePath": "Harmonie.JPG",
+		"type": 1,
+		"price": 200.00
+	},
+	{
+		"name": "Thuis_bij_Jezus",
+		"description": "acryl op canvas; 40 x 60 cm",
+		"imagePath": "Thuis_bij_Jezus.jpg",
+		"type": 1,
+		"price": 100.00
+		},
+	{
+		"name": "Bollen",
+		"description": "acryl op canvas; 80 x 80 cm",
+		"imagePath": "Bollen.jpg",
+		"type": 1,
+		"price": 250.00
+	},
+	{
+		"name": "WinterBos",
+		"description": "acryl op canvas; 80 x 60 cm",
+		"imagePath": "WinterBos.jpg",
+		"type": 1,
+		"price": 300.00
+	},
+	{
+		"name": "Herfst_in_blauw",
+		"description": "acryl op canvas; 60 x 80 cm",
+		"imagePath": "Herfst_in_blauw.JPG",
+		"type": 1,
+		"price": 300.00
+	},
+	{
+		"name": "Levend_water",
+		"description": "acryl op canvas; 80 x 60 cm",
+		"imagePath": "Levend_water.jpg",
+		"type": 1,
+		"price": 200.00
+	}
+]

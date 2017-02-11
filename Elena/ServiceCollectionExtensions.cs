@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Elena.Models;
 using Elena.Services;
 using Elena.Settings;
+using System.Linq;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Elena
 {
@@ -122,6 +125,23 @@ namespace Elena
 #endif
 
             return services;
+        }
+
+        public static void SeedData(this ElenaDbContext ctx)
+        {
+            if (!ctx.Products.Any())
+            {
+                var products = Newtonsoft.Json.JsonConvert
+                    .DeserializeObject<List<Product>>(File.ReadAllText("products.json"));
+                var id = 1;
+                foreach (var p in products)
+                {
+                    p.Id = id++;
+                }
+
+                ctx.Products.AddRange(products);
+                ctx.SaveChanges();
+            }
         }
     }
 }

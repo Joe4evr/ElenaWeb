@@ -73,7 +73,7 @@ namespace Elena.Controllers
         [HttpGet("gallery/{page?}", Name = HomeControllerRoute.GetGallery)]
         public IActionResult Products(int page = 0)
         {
-            var products = _db.Products.Where(p => p.Type == ProductType.Painting).ToList();
+            var products = _db.Products.Where(p => p.Type == ProductType.Painting && p.IsAvailable).ToList();
             ViewBag.Title = "Gallery";
             return base.View(viewName: HomeControllerAction.Products,
                 model: new ProductsViewModel(products.Skip(_itemsPerPage * page).Take(_itemsPerPage), products.Count));
@@ -83,7 +83,7 @@ namespace Elena.Controllers
         [HttpGet("cakes/{page?}", Name = HomeControllerRoute.GetCakes)]
         public IActionResult Cakes(int page = 0)
         {
-            var products = _db.Products.Where(p => p.Type == ProductType.Cake).ToList();
+            var products = _db.Products.Where(p => p.Type == ProductType.Cake && p.IsAvailable).ToList();
             ViewBag.Title = "Cakes";
             return base.View(viewName: HomeControllerAction.Products,
                 model: new ProductsViewModel(products.Skip(_itemsPerPage * page).Take(_itemsPerPage), products.Count));

@@ -197,6 +197,7 @@ namespace Elena
                 ctx.Database.EnsureCreated();
 #else
                 ctx.Database.Migrate();
+                ctx.SeedData();
 #endif
             }
         }

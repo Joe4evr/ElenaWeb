@@ -6,8 +6,8 @@
     ViewBag.Title = $"Detail - {Model.Name}";
 
     string img = (Model.Type == Elena.Models.ProductType.Painting)
-        ? "~/img/paintings/" + Model.Image
-        : "~/img/cakes/" + Model.Image;
+        ? "/img/paintings/" + Model.Image
+        : "/img/cakes/" + Model.Image;
 }
 
 <div>
@@ -18,10 +18,10 @@
     <p>
         @Model.Description
     </p>
-    <p>
+    @*<p>
         &euro; @Model.Price
     </p>
-    @*<p>
+    <p>
         <a asp-route="order">Order</a>
     </p>*@
 </div>

@@ -107,6 +107,7 @@
             "wwwroot",
             "**/*.cshtml",
             "config.json",
+            "products.json",
             "web.config"
         ]
     },
