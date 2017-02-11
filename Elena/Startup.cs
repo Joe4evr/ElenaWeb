@@ -14,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Elena.Models;
 using Elena.Settings;
+using System;
+using System.Linq;
 
 namespace Elena
 {
@@ -57,7 +59,7 @@ namespace Elena
         /// Staging or Production by default.</param>
         public Startup(IHostingEnvironment hostingEnvironment)
         {
-            configuration = new ConfigurationBuilder()
+            var builder = new ConfigurationBuilder()
                 .SetBasePath(hostingEnvironment.ContentRootPath)
                 // Add configuration from the config.json file.
                 .AddJsonFile("config.json")
@@ -81,8 +83,10 @@ namespace Elena
                 // [System.Environment]::SetEnvironmentVariable("[VARIABLE_NAME]", "[VARIABLE_VALUE]", [System.EnvironmentVariableTarget]::Machine)
                 // Note: Environment variables use a colon separator e.g. You can override the site title by creating a
                 // variable named AppSettings:SiteTitle. See http://docs.asp.net/en/latest/security/app-secrets.html
-                .AddEnvironmentVariables()
-                .Build();
+                .AddEnvironmentVariables();
+
+            //Console.WriteLine($"ConfigSources: {String.Join(", ", builder.Sources.Select(c => c.GetType().Name))}");
+            configuration = builder.Build();
 
             if (hostingEnvironment.IsDevelopment())
             {
@@ -172,13 +176,14 @@ namespace Elena
                         .AddDebug());
 
             application
+                //.UseDeveloperErrorPages()
+                .UseIfElse(hostingEnvironment.IsDevelopment(), x => x.UseDebugging()
+                        .UseDeveloperErrorPages(), x => x.UseErrorPages())
                 // Removes the Server HTTP header from the HTTP response for marginally better security and performance.
                 .UseNoServerHttpHeader()
                 // Add static files to the request pipeline e.g. hello.html or world.css.
                 .UseStaticFiles()
                 .UseCookiePolicy()
-                .UseIfElse(hostingEnvironment.IsDevelopment(), x => x.UseDebugging()
-                        .UseDeveloperErrorPages(), x => x.UseErrorPages())
                 .UseStrictTransportSecurityHttpHeader()
                 .UsePublicKeyPinsHttpHeader()
                 .UseContentSecurityPolicyHttpHeader(sslPort, hostingEnvironment)
